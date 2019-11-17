@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import './accept.dart';
+import '../util/util.dart';
 
 class EntryPage extends StatefulWidget {
   @override
@@ -12,13 +11,8 @@ class EntryPage extends StatefulWidget {
   }
 }
 
-_readKeys(BuildContext context) async {
-  var jsonData = await DefaultAssetBundle.of(context).loadString('./secrets.json');
-  return json.decode(jsonData);
-}
-
 void _authorizeAccess(BuildContext context) async {
-  var jsonData = await _readKeys(context);
+  var jsonData = await Util.readJson(context, './secrets.json');
 
   var queryParameters = {
     'client_id': jsonData['client_id'].toString(),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:spotifyclient/util/util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class AcceptPage extends StatefulWidget {
@@ -34,12 +35,6 @@ class _AcceptPageState extends State<AcceptPage> {
     _requestForRefreshAndAccessToken(authCode);
   }
 
-  _readKeys(BuildContext context) async {
-    var jsonData =
-        await DefaultAssetBundle.of(context).loadString('./secrets.json');
-    return json.decode(jsonData);
-  }
-
   void _requestForRefreshAndAccessToken(String authCode) async {
     var url = 'https://accounts.spotify.com/api/token';
     var body = {
@@ -48,7 +43,7 @@ class _AcceptPageState extends State<AcceptPage> {
       'redirect_uri': 'https://www.spotify.com/is/'
     };
 
-    var jsonData = await _readKeys(context);
+    var jsonData = await Util.readJson(context, './secrets.json');
 
     var clientId = jsonData['client_id'];
     var clientSecret = jsonData['client_secret'];
@@ -56,7 +51,7 @@ class _AcceptPageState extends State<AcceptPage> {
     var bytes = utf8.encode(clientId + ':' + clientSecret);
     var base64str = base64.encode(bytes);
 
-    var headers = {HttpHeaders.authorizationHeader: 'Basic '+base64str};
+    var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
 
     var response = await http.post(url, body: body, headers: headers);
 
