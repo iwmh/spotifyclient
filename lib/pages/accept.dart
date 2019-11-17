@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,7 +18,6 @@ class AcceptPage extends StatefulWidget {
 }
 
 class _AcceptPageState extends State<AcceptPage> {
-
   WebViewController _controller;
 
   Future<void> _detectUriChange() async {
@@ -32,6 +34,12 @@ class _AcceptPageState extends State<AcceptPage> {
     _requestForRefreshAndAccessToken(authCode);
   }
 
+  _readKeys(BuildContext context) async {
+    var jsonData =
+        await DefaultAssetBundle.of(context).loadString('./secrets.json');
+    return json.decode(jsonData);
+  }
+
   void _requestForRefreshAndAccessToken(String authCode) async {
     var url = 'https://accounts.spotify.com/api/token';
     var body = {
@@ -40,8 +48,20 @@ class _AcceptPageState extends State<AcceptPage> {
       'redirect_uri': 'https://www.spotify.com/is/'
     };
 
-    var response = await http.post(url, body: body, headers: {});
-    print('');
+    var jsonData = await _readKeys(context);
+
+    var clientId = jsonData['client_id'];
+    var clientSecret = jsonData['client_secret'];
+
+    var bytes = utf8.encode(clientId + ':' + clientSecret);
+    var base64str = base64.encode(bytes);
+
+    var headers = {HttpHeaders.authorizationHeader: 'Basic '+base64str};
+
+    var response = await http.post(url, body: body, headers: headers);
+
+    // Moved to home page.
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override
