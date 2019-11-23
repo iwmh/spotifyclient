@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:spotifyclient/models/ApiTokenModel.dart';
 import 'package:spotifyclient/util/util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../models/api/Auth.dart';
 
 class AcceptPage extends StatefulWidget {
   final String _initialUri;
@@ -54,6 +58,17 @@ class _AcceptPageState extends State<AcceptPage> {
     var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
 
     var response = await http.post(url, body: body, headers: headers);
+
+    //  convert response.body to JSON
+    var resString = response.body;
+    Map authMap = jsonDecode(resString);
+    var auth = Auth.fromJson(authMap);
+
+    // Store access token
+    Provider.of<ApiTokenModel>(context, listen: false).storeAccessToken(auth.accessToken);
+
+    // Get the access token
+    var access_token = await Provider.of<ApiTokenModel>(context, listen: false).accessToken;
 
     // Moved to home page.
     Navigator.pushReplacementNamed(context, '/home');

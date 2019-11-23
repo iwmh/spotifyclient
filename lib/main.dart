@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spotifyclient/models/ApiTokenModel.dart';
 
 import './pages/entry.dart';
 import './pages/home.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          builder: (BuildContext context) =>ApiTokenModel(),
+        ),
+      ],
+      child: MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
