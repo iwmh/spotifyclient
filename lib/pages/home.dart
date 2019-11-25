@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:spotifyclient/models/ApiTokenModel.dart';
 
 class HomePage extends StatefulWidget {
   @override

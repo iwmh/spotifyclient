@@ -8,22 +8,62 @@ import './pages/home.dart';
 void main() => runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          builder: (BuildContext context) =>ApiTokenModel(),
+          builder: (BuildContext context) => ApiTokenModel(),
         ),
       ],
       child: MyApp(),
     ));
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<String> _access_token;
+
+  @override
+  void initState() {
+    setToken();
+    super.initState();
+  }
+
+  void setToken() async {
+    _access_token =
+        Provider.of<ApiTokenModel>(context, listen: false).accessToken;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return FutureBuilder(
+      future: _access_token,
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              return MaterialApp(
+                title: 'You have an access token already!',
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+                home: Text('You have an access token.'),
+              );
+            } else {
+              return MaterialApp(
+                title: 'Flutter Demo',
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+                home: MyHomePage(title: 'Flutter Demo Home Page'),
+              );
+            }
+        }
+      },
     );
   }
 }
