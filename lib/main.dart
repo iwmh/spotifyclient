@@ -14,56 +14,16 @@ void main() => runApp(MultiProvider(
       child: MyApp(),
     ));
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  Future<String> _access_token;
-
-  @override
-  void initState() {
-    setToken();
-    super.initState();
-  }
-
-  void setToken() async {
-    _access_token =
-        Provider.of<ApiTokenModel>(context, listen: false).accessToken;
-  }
+class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _access_token,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-          case ConnectionState.done:
-            if (snapshot.hasData) {
-              return MaterialApp(
-                title: 'You have an access token already!',
-                theme: ThemeData(
-                  primarySwatch: Colors.blue,
-                ),
-                home: Text('You have an access token.'),
-              );
-            } else {
-              return MaterialApp(
-                title: 'Flutter Demo',
-                theme: ThemeData(
-                  primarySwatch: Colors.blue,
-                ),
-                home: MyHomePage(title: 'Flutter Demo Home Page'),
-              );
-            }
-        }
-      },
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -84,8 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Demo',
       initialRoute: '/',
       routes: {
-        '/': (BuildContext context) => EntryPage(),
-        '/home': (BuildContext context) => HomePage(),
+        '/': (BuildContext context) => HomePage(),
       },
     );
   }
