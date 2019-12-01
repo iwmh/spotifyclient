@@ -1,16 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
-import 'package:spotifyclient/util/util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../models/api/Auth.dart';
 
 class AcceptPage extends StatefulWidget {
   final String _initialUri;
@@ -40,38 +34,11 @@ class _AcceptPageState extends State<AcceptPage> {
   }
 
   void _requestForRefreshAndAccessToken(String authCode) async {
-    var url = 'https://accounts.spotify.com/api/token';
-    var body = {
-      'grant_type': 'authorization_code',
-      'code': authCode,
-      'redirect_uri': 'https://www.spotify.com/is/'
-    };
 
-    var jsonData = await Util.readJson(context, './secrets.json');
-
-    var clientId = jsonData['client_id'];
-    var clientSecret = jsonData['client_secret'];
-
-    var bytes = utf8.encode(clientId + ':' + clientSecret);
-    var base64str = base64.encode(bytes);
-
-    var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
-
-    var response = await http.post(url, body: body, headers: headers);
-
-    //  convert response.body to JSON
-    var resString = response.body;
-    Map authMap = jsonDecode(resString);
-    var auth = Auth.fromJson(authMap);
-
-    // Store access token
-    Provider.of<ApiTokenModel>(context, listen: false).storeAccessToken(auth.accessToken);
-
-    // Get the access token
-    var access_token = await Provider.of<ApiTokenModel>(context, listen: false).accessToken;
+    await Provider.of<ApiTokenModel>(context, listen: false).getAccessToken(authCode);
 
     // Moved to home page.
-    Navigator.pushReplacementNamed(context, '/home');
+    Navigator.pushReplacementNamed(context, '/');
   }
 
   @override

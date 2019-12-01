@@ -21,8 +21,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void setToken() async {
-    _access_token =
+    _access_token = 
         Provider.of<ApiTokenModel>(context, listen: false).accessToken;
+
   }
 
   @override

@@ -15,9 +15,18 @@ void main() => runApp(MultiProvider(
     ));
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+
+    /*
+    ONLY IN DEBUGGING
+    */
+    Provider.of<ApiTokenModel>(context, listen: false).deleteAccessToken();
+    Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresAt();
+    Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresIn();
+    Provider.of<ApiTokenModel>(context, listen: false).deleteScope();
+    Provider.of<ApiTokenModel>(context, listen: false).deleteRefreshToken();
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

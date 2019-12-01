@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Util {
-  static readJson(BuildContext context, String assetPath) async {
-    var jsonData =
-        await DefaultAssetBundle.of(context).loadString('./secrets.json');
+  static readJson(String assetPath) async {
+    var jsonData = await rootBundle.loadString(assetPath);
     return json.decode(jsonData);
   }
 }

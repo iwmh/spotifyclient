@@ -12,7 +12,7 @@ class EntryPage extends StatefulWidget {
 }
 
 void _authorizeAccess(BuildContext context) async {
-  var jsonData = await Util.readJson(context, './secrets.json');
+  var jsonData = await Util.readJson('./secrets.json');
 
   var queryParameters = {
     'client_id': jsonData['client_id'].toString(),
