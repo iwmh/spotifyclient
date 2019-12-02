@@ -25,7 +25,7 @@ class ApiTokenModel extends ChangeNotifier {
   final accessTokenURL = 'https://accounts.spotify.com/api/token';
 
   // Get access token
-  void getAccessToken(String authCode) async {
+  Future<void> getAccessToken(String authCode) async {
     var body = {
       'grant_type': 'authorization_code',
       'code': authCode,
@@ -145,27 +145,27 @@ class ApiTokenModel extends ChangeNotifier {
   }
 
   // Delete token-related information
-  void deleteAccessToken() async {
+  Future<void> deleteAccessToken() async {
     await _storage.delete(key: accessTokenKey);
     notifyListeners();
   }
 
-  void deleteScope() async {
+  Future<void> deleteScope() async {
     await _storage.delete(key: scopeKey);
     notifyListeners();
   }
 
-  void deleteExpiresIn() async {
+  Future<void> deleteExpiresIn() async {
     await _storage.delete(key: expiresInKey);
     notifyListeners();
   }
 
-  void deleteExpiresAt() async {
+  Future<void> deleteExpiresAt() async {
     await _storage.delete(key: expiresAtKey);
     notifyListeners();
   }
 
-  void deleteRefreshToken() async {
+  Future<void> deleteRefreshToken() async {
     await _storage.delete(key: refreshTokenKey);
     notifyListeners();
   }
