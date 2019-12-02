@@ -21,9 +21,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void setToken() async {
-    _access_token = 
+    _access_token =
         Provider.of<ApiTokenModel>(context, listen: false).accessToken;
-
   }
 
   @override
@@ -46,7 +45,8 @@ class _HomePageState extends State<HomePage> {
                   child: RaisedButton(
                     child: Text('Back'),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Provider.of<ApiTokenModel>(context, listen: false)
+                          .checkAccessTokenValidity();
                     },
                   ),
                 ),

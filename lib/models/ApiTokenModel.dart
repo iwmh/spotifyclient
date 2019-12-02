@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:spotifyclient/models/api/Auth.dart';
@@ -43,7 +42,8 @@ class ApiTokenModel extends ChangeNotifier {
 
     var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
 
-    var response = await http.post(accessTokenURL, body: body, headers: headers);
+    var response =
+        await http.post(accessTokenURL, body: body, headers: headers);
 
     //  convert response.body to JSON
     var resString = response.body;
@@ -56,20 +56,20 @@ class ApiTokenModel extends ChangeNotifier {
     storeExpiresIn(auth.expiresIn.toString());
     storeExpiresAt(auth.expiresIn.toString());
     storeRefreshToken(auth.refreshToken);
-
   }
 
   // Refreshing the access token by sending refresh token
-  void refreshAccessToken() async {
+  Future<void> refreshAccessToken() async {
     // get the refresh token from the storage
     var refreshToken = await _storage.read(key: refreshTokenKey);
     var body = {'grant_type': 'refresh_token', 'refresh_token': refreshToken};
-  
+
     var base64str = await createAuthHeader();
 
     var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
 
-    var response = await http.post(accessTokenURL, body: body, headers: headers);
+    var response =
+        await http.post(accessTokenURL, body: body, headers: headers);
 
     //  convert response.body to JSON
     var resString = response.body;
@@ -81,8 +81,6 @@ class ApiTokenModel extends ChangeNotifier {
     storeScope(auth.scope);
     storeExpiresIn(auth.expiresIn.toString());
     storeExpiresAt(auth.expiresIn.toString());
-    storeRefreshToken(auth.refreshToken);
-
   }
 
   Future<String> createAuthHeader() async {
@@ -93,6 +91,25 @@ class ApiTokenModel extends ChangeNotifier {
 
     var bytes = utf8.encode(clientId + ':' + clientSecret);
     return base64.encode(bytes);
+  }
+
+  Future<bool> isAccessTokenAlive() async {
+    // now
+    var now = new DateTime.now();
+
+    // expires_at
+    var expiresAtMilisecStr = await expiresAt;
+    var expiresAtMilisec = int.parse(expiresAtMilisecStr);
+    var expAt = new DateTime.fromMillisecondsSinceEpoch(expiresAtMilisec);
+
+    return now.isBefore(expAt);
+  }
+
+  // if access token is unavalable, refresh the access token
+  Future<void> checkAccessTokenValidity() async {
+    if (!await isAccessTokenAlive()) {
+      await refreshAccessToken();
+    }
   }
 
   // Store token-related information
@@ -117,9 +134,8 @@ class ApiTokenModel extends ChangeNotifier {
 
     var now = new DateTime.now();
     var expiresAt = now.add(new Duration(seconds: intExpiresIn));
-
-
-    await _storage.write(key: expiresAtKey, value: expiresIn);
+    await _storage.write(
+        key: expiresAtKey, value: expiresAt.millisecondsSinceEpoch.toString());
     notifyListeners();
   }
 
@@ -167,6 +183,11 @@ class ApiTokenModel extends ChangeNotifier {
 
   Future<String> get expiresIn async {
     String ret = await _storage.read(key: expiresInKey);
+    return ret;
+  }
+
+  Future<String> get expiresAt async {
+    String ret = await _storage.read(key: expiresAtKey);
     return ret;
   }
 
