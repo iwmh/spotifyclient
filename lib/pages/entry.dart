@@ -17,6 +17,7 @@ void _authorizeAccess(BuildContext context) async {
   var queryParameters = {
     'client_id': jsonData['client_id'].toString(),
     'response_type': 'code',
+    'scope': 'user-modify-playback-state user-library-modify playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state user-read-currently-playing',
     'redirect_uri': 'https://www.spotify.com/is/'
   };
   var uri = Uri.https('accounts.spotify.com', '/authorize', queryParameters)
