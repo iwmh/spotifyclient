@@ -23,7 +23,7 @@ class _AcceptPageState extends State<AcceptPage> {
     var authCode;
     while (true) {
       var url = await _controller.currentUrl();
-      if (url.contains('https://www.spotify.com/is/')) {
+      if (url.startsWith('https://www.spotify.com/is/')) {
         var targetUrl = Uri.dataFromString(url);
         var code = targetUrl.queryParameters['code'];
         authCode = code;
