@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import './accept.dart';
-import '../util/util.dart';
+import 'package:provider/provider.dart';
+import 'package:spotifyclient/models/ApiTokenModel.dart';
+import 'package:spotifyclient/pages/auth.dart';
 
 class EntryPage extends StatefulWidget {
   @override
@@ -11,37 +11,51 @@ class EntryPage extends StatefulWidget {
   }
 }
 
-void _authorizeAccess(BuildContext context) async {
-  var jsonData = await Util.readJson('./secrets.json');
-
-  var queryParameters = {
-    'client_id': jsonData['client_id'].toString(),
-    'response_type': 'code',
-    'scope': 'user-modify-playback-state user-library-modify playlist-read-private playlist-modify-public playlist-modify-private user-read-playback-state user-read-currently-playing',
-    'redirect_uri': 'https://www.spotify.com/is/'
-  };
-  var uri = Uri.https('accounts.spotify.com', '/authorize', queryParameters)
-      .toString();
-  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-    return AcceptPage(uri);
-  }));
-}
-
 class _EntryPageState extends State<EntryPage> {
+  Future<String> _access_token;
+
+  @override
+  void initState() {
+    setToken();
+    super.initState();
+  }
+
+  void setToken() async {
+    _access_token =
+        Provider.of<ApiTokenModel>(context, listen: false).accessToken;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Entry Page'),
-      ),
-      body: Center(
-        child: RaisedButton(
-          child: Text('Authorize Access'),
-          onPressed: () async {
-            _authorizeAccess(context);
-          },
-        ),
-      ),
+    return FutureBuilder(
+      future: _access_token,
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          case ConnectionState.done:
+            if (snapshot.hasData) {
+              return Scaffold(
+                appBar: AppBar(
+                  title: Text('Entry Page'),
+                ),
+                body: Center(
+                  child: RaisedButton(
+                    child: Text('Back'),
+                    onPressed: () {
+                      Provider.of<ApiTokenModel>(context, listen: false)
+                          .checkAccessTokenValidity();
+                    },
+                  ),
+                ),
+              );
+            } else {
+              return AuthPage();
+            }
+        }
+      },
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
 
 import './pages/entry.dart';
-import './pages/home.dart';
 
 void main() => runApp(MultiProvider(
       providers: [
@@ -21,11 +20,11 @@ class MyApp extends StatelessWidget {
     /*
     ONLY IN DEBUGGING
     */
-    Provider.of<ApiTokenModel>(context, listen: false).deleteAccessToken();
-    Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresAt();
-    Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresIn();
-    Provider.of<ApiTokenModel>(context, listen: false).deleteScope();
-    Provider.of<ApiTokenModel>(context, listen: false).deleteRefreshToken();
+    // Provider.of<ApiTokenModel>(context, listen: false).deleteAccessToken();
+    // Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresAt();
+    // Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresIn();
+    // Provider.of<ApiTokenModel>(context, listen: false).deleteScope();
+    // Provider.of<ApiTokenModel>(context, listen: false).deleteRefreshToken();
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -53,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Demo',
       initialRoute: '/',
       routes: {
-        '/': (BuildContext context) => HomePage(),
+        '/': (BuildContext context) => EntryPage(),
       },
     );
   }
