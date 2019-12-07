@@ -13,7 +13,7 @@ class EntryPage extends StatefulWidget {
 }
 
 class _EntryPageState extends State<EntryPage> {
-  Future<String> _access_token;
+  Future<bool> _access_token_is_valid;
 
   @override
   void initState() {
@@ -22,14 +22,14 @@ class _EntryPageState extends State<EntryPage> {
   }
 
   void setToken() async {
-    _access_token =
-        Provider.of<ApiTokenModel>(context, listen: false).accessToken;
+    _access_token_is_valid =
+        Provider.of<ApiTokenModel>(context, listen: false).isAccessTokenAlive();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _access_token,
+      future: _access_token_is_valid,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -38,7 +38,11 @@ class _EntryPageState extends State<EntryPage> {
             return CircularProgressIndicator();
           case ConnectionState.done:
             if (snapshot.hasData) {
-              return HomePage();
+              if (snapshot.data) {
+                return HomePage();
+              } else {
+                return AuthPage();
+              }
             } else {
               return AuthPage();
             }

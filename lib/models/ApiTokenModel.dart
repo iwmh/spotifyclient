@@ -11,13 +11,18 @@ class ApiTokenModel extends ChangeNotifier {
   // Secure Storage
   final _storage = new FlutterSecureStorage();
 
-  // const
-  final accessTokenKey = 'spotifyClient_access_token';
-  final scopeKey = 'spotifyClient_scope';
-  final expiresInKey = 'spotifyClient_expires_in';
-  final expiresAtKey = 'spotifyClient_expires_at';
-  final refreshTokenKey = 'spotifyClient_refresh_token';
+  /* 
+   * Const
+   */
+  static const accessTokenKey = 'spotifyClient_access_token';
+  static const scopeKey = 'spotifyClient_scope';
+  static const expiresInKey = 'spotifyClient_expires_in';
+  static const expiresAtKey = 'spotifyClient_expires_at';
+  static const refreshTokenKey = 'spotifyClient_refresh_token';
 
+  /*
+   * URLs
+   */
   // Authorize access URL
   final authorizeAccessURL = 'https://accounts.spotify.com/authorize';
 
@@ -83,6 +88,7 @@ class ApiTokenModel extends ChangeNotifier {
 
     // expires_at
     var expiresAtMilisecStr = await expiresAt;
+    if (expiresAtMilisecStr == null) return false;
     var expiresAtMilisec = int.parse(expiresAtMilisecStr);
     var expAt = new DateTime.fromMillisecondsSinceEpoch(expiresAtMilisec);
 
@@ -91,6 +97,7 @@ class ApiTokenModel extends ChangeNotifier {
 
   // if access token is unavalable, refresh the access token
   Future<void> checkAccessTokenValidity() async {
+    var test = await accessToken;
     if (!await isAccessTokenAlive()) {
       await refreshAccessToken();
     }
