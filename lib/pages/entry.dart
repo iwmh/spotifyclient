@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
 import 'package:spotifyclient/pages/auth.dart';
+import 'package:spotifyclient/pages/home.dart';
 
 class EntryPage extends StatefulWidget {
   @override
@@ -37,20 +38,7 @@ class _EntryPageState extends State<EntryPage> {
             return CircularProgressIndicator();
           case ConnectionState.done:
             if (snapshot.hasData) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text('Entry Page'),
-                ),
-                body: Center(
-                  child: RaisedButton(
-                    child: Text('Back'),
-                    onPressed: () {
-                      Provider.of<ApiTokenModel>(context, listen: false)
-                          .checkAccessTokenValidity();
-                    },
-                  ),
-                ),
-              );
+              return HomePage();
             } else {
               return AuthPage();
             }

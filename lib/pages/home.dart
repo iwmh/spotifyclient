@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spotifyclient/models/ApiTokenModel.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,7 +19,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Scaffold(
+                appBar: AppBar(
+                  title: Text('This is Home Page'),
+                ),
+                body: Center(
+                  child: RaisedButton(
+                    child: Text('Back'),
+                    onPressed: () {
+                      Provider.of<ApiTokenModel>(context, listen: false)
+                          .checkAccessTokenValidity();
+                    },
+                  ),
+                ),
+              );
   }
 
 }
