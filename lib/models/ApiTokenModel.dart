@@ -32,13 +32,7 @@ class ApiTokenModel extends ChangeNotifier {
       'redirect_uri': 'https://www.spotify.com/is/'
     };
 
-    var jsonData = await Util.readJson('./secrets.json');
-
-    var clientId = jsonData['client_id'];
-    var clientSecret = jsonData['client_secret'];
-
-    var bytes = utf8.encode(clientId + ':' + clientSecret);
-    var base64str = base64.encode(bytes);
+    var base64str = await Util.createBase64Str();
 
     var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
 
@@ -64,7 +58,7 @@ class ApiTokenModel extends ChangeNotifier {
     var refreshToken = await _storage.read(key: refreshTokenKey);
     var body = {'grant_type': 'refresh_token', 'refresh_token': refreshToken};
 
-    var base64str = await createAuthHeader();
+    var base64str = await Util.createBase64Str();
 
     var headers = {HttpHeaders.authorizationHeader: 'Basic ' + base64str};
 
@@ -81,16 +75,6 @@ class ApiTokenModel extends ChangeNotifier {
     storeScope(auth.scope);
     storeExpiresIn(auth.expiresIn.toString());
     storeExpiresAt(auth.expiresIn.toString());
-  }
-
-  Future<String> createAuthHeader() async {
-    var jsonData = await Util.readJson('./secrets.json');
-
-    var clientId = jsonData['client_id'];
-    var clientSecret = jsonData['client_secret'];
-
-    var bytes = utf8.encode(clientId + ':' + clientSecret);
-    return base64.encode(bytes);
   }
 
   Future<bool> isAccessTokenAlive() async {
