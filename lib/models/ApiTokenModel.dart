@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:spotifyclient/models/api/Auth.dart';
+import 'package:spotifyclient/models/api/auth.dart';
 import 'package:spotifyclient/util/util.dart';
 
 class ApiTokenModel extends ChangeNotifier {
@@ -97,7 +97,6 @@ class ApiTokenModel extends ChangeNotifier {
 
   // if access token is unavalable, refresh the access token
   Future<void> checkAccessTokenValidity() async {
-    var test = await accessToken;
     if (!await isAccessTokenAlive()) {
       await refreshAccessToken();
     }
@@ -186,4 +185,11 @@ class ApiTokenModel extends ChangeNotifier {
     String ret = await _storage.read(key: refreshTokenKey);
     return ret;
   }
+
+  Future<Map<String, String>> getAuthorizationHeader() async {
+    var accessToken = await this.accessToken;
+    return {HttpHeaders.authorizationHeader: 'Bearer ' + accessToken};
+  }
+
+
 }

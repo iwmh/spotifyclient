@@ -1,26 +1,32 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'auth.g.dart';
+
+
+@JsonSerializable()
+
 class Auth {
+  @JsonKey(name: 'access_token')
   final String accessToken;
+
+  @JsonKey(name: 'token_type')
   final String tokenType;
+
+  @JsonKey(name: 'scope')
   final String scope;
+
+  @JsonKey(name: 'expires_in')
   final int expiresIn;
+
+  @JsonKey(name: 'refresh_token')
   final String refreshToken;
 
   Auth(this.accessToken, this.tokenType, this.scope, this.expiresIn, this.refreshToken);
 
-  Auth.fromJson(Map<String, dynamic> json) 
-    : accessToken = json['access_token'],
-      tokenType = json['token_type'],
-      scope = json['scope'],
-      expiresIn = json['expires_in'],
-      refreshToken = json['refresh_token'];
+  factory Auth.fromJson(Map<String, dynamic> json) =>
+      _$AuthFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    'access_token': accessToken,
-    'token_type': tokenType,
-    'scope': scope,
-    'expires_in': expiresIn,
-    'refresh_token': refreshToken
-  };
+  Map<String, dynamic> toJson() => _$AuthToJson(this);
 
 
 }

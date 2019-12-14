@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
+import 'package:spotifyclient/models/StateModel.dart';
 
 import './pages/entry.dart';
 
@@ -9,6 +10,9 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(
           builder: (BuildContext context) => ApiTokenModel(),
         ),
+        ChangeNotifierProvider(
+          builder: (BuildContext context) => StateModel(),
+        )
       ],
       child: MyApp(),
     ));
@@ -16,7 +20,6 @@ void main() => runApp(MultiProvider(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     /*
     ONLY IN DEBUGGING
     */
