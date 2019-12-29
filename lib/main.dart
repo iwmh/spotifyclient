@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
 import 'package:spotifyclient/models/StateModel.dart';
+import 'package:spotifyclient/pages/home.dart';
 
 import './pages/entry.dart';
 
@@ -56,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       initialRoute: '/',
       routes: {
         '/': (BuildContext context) => EntryPage(),
+        '/home': (BuildContext context) => HomePage(),
       },
     );
   }

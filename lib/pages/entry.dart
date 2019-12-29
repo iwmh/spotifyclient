@@ -40,6 +40,7 @@ class _EntryPageState extends State<EntryPage> {
             if (snapshot.hasData) {
               if (snapshot.data) {
                 return HomePage();
+                // Navigator.pushReplacementNamed(context, "/home");
               } else {
                 return AuthPage();
               }

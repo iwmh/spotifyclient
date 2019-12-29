@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,26 +8,36 @@ import 'package:spotifyclient/models/api/playlist.dart';
 import 'package:http/http.dart' as http;
 
 class StateModel extends ChangeNotifier {
-
   /*
    * URLs
    */
 
   static const getPlaylistUrl = 'https://api.spotify.com/v1/me/playlists';
 
-
   // List of playlist
   List<Playlist> playlist = [];
 
-  void getCurrentUsersPlaylists(BuildContext context) async {
-    var authHeader = await Provider.of<ApiTokenModel>(context, listen: false).getAuthorizationHeader();
-    var response =
-        await http.get(getPlaylistUrl, headers: authHeader);
+  Future<List<Playlist>> getCurrentUsersPlaylists(BuildContext context) async {
+    var paging;
 
-    Map pagingMap = jsonDecode(response.body);
-    var paging = PagingPlaylist.fromJson(pagingMap);
+    if (hasNotPlaylist()) {
+      var authHeader = await Provider.of<ApiTokenModel>(context, listen: false)
+          .getAuthorizationHeader();
+      var response = await http.get(getPlaylistUrl, headers: authHeader);
 
-    playlist = paging.items;
+      Map pagingMap = jsonDecode(response.body);
+      paging = PagingPlaylist.fromJson(pagingMap);
 
+      playlist = paging.items;
+    }
+      return paging.items;
+  }
+
+  List<Playlist> get playlists {
+    return playlist;
+  }
+
+  bool hasNotPlaylist() {
+    return playlist.length == 0;
   }
 }
