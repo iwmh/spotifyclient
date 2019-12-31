@@ -13,7 +13,7 @@ class EntryPage extends StatefulWidget {
 }
 
 class _EntryPageState extends State<EntryPage> {
-  Future<bool> _access_token_is_valid;
+  Future<bool> _isAuthorized;
 
   @override
   void initState() {
@@ -22,14 +22,14 @@ class _EntryPageState extends State<EntryPage> {
   }
 
   void setToken() async {
-    _access_token_is_valid =
-        Provider.of<ApiTokenModel>(context, listen: false).isAccessTokenAlive();
+    _isAuthorized =
+        Provider.of<ApiTokenModel>(context, listen: false).hasAuthorizationCode();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _access_token_is_valid,
+      future: _isAuthorized,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:

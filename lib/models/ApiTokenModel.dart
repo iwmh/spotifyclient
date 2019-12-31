@@ -14,6 +14,8 @@ class ApiTokenModel extends ChangeNotifier {
   /* 
    * Const
    */
+  static const authorizationCodeKey = 'spotifyClient_authorization_code';
+
   static const accessTokenKey = 'spotifyClient_access_token';
   static const scopeKey = 'spotifyClient_scope';
   static const expiresInKey = 'spotifyClient_expires_in';
@@ -82,6 +84,16 @@ class ApiTokenModel extends ChangeNotifier {
     storeExpiresAt(auth.expiresIn.toString());
   }
 
+  // See if the user has ever got the authorization Code before.
+  Future<bool> hasAuthorizationCode() async {
+    var authCode = await authorizationCode;
+    if (authCode == null) {
+      return false;
+    } else {
+      return authCode.length > 0;
+    }
+  }
+
   Future<bool> isAccessTokenAlive() async {
     // now
     var now = new DateTime.now();
@@ -100,6 +112,12 @@ class ApiTokenModel extends ChangeNotifier {
     if (!await isAccessTokenAlive()) {
       await refreshAccessToken();
     }
+  }
+
+  // Store authorizatioinCode
+  void storeAuthorizationCode(String authorizationCode) async {
+    await _storage.write(key: authorizationCodeKey, value: authorizationCode);
+    notifyListeners();
   }
 
   // Store token-related information
@@ -160,6 +178,11 @@ class ApiTokenModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> get authorizationCode async {
+    String ret = await _storage.read(key: authorizationCodeKey);
+    return ret;
+  }
+
   // Read token-related information
   Future<String> get accessToken async {
     String ret = await _storage.read(key: accessTokenKey);
@@ -190,6 +213,4 @@ class ApiTokenModel extends ChangeNotifier {
     var accessToken = await this.accessToken;
     return {HttpHeaders.authorizationHeader: 'Bearer ' + accessToken};
   }
-
-
 }

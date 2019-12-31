@@ -27,6 +27,8 @@ class _AcceptPageState extends State<AcceptPage> {
         var targetUrl = Uri.dataFromString(url);
         var code = targetUrl.queryParameters['code'];
         authCode = code;
+        // Store the authorizationCode
+        Provider.of<ApiTokenModel>(context, listen: false).storeAuthorizationCode(authCode);
         break;
       }
     }
