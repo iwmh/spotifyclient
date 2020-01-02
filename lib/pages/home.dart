@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('This is Home Page'),
+        title: Text('This is Home Page.'),
       ),
       body: FutureBuilder<List<Playlist>>(
         future:
@@ -34,7 +34,9 @@ class _HomePageState extends State<HomePage> {
             case ConnectionState.done:
               if (snapshot.hasData) {
                 return _FutureList(list: snapshot.data);
-              } else {}
+              } else {
+                return _FutureList(list: List<Playlist>());
+              }
           }
 
           if (snapshot.hasData) {
