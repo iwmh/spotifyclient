@@ -108,7 +108,7 @@ class ApiTokenModel extends ChangeNotifier {
   }
 
   Future<bool> requiresUserToAuthenticate() async {
-    return await hasAuthorizationCode() && await isAccessTokenAlive();
+    return await hasAuthorizationCode();
   }
 
   // if access token is unavalable, refresh the access token

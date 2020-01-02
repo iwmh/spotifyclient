@@ -20,6 +20,9 @@ class StateModel extends ChangeNotifier {
   Future<List<Playlist>> getCurrentUsersPlaylists(BuildContext context) async {
     var paging;
 
+    // TODO: Hope this function is called whenever to use the API.
+    await Provider.of<ApiTokenModel>(context, listen: false).checkAccessTokenValidity();
+
     var authHeader = await Provider.of<ApiTokenModel>(context, listen: false)
         .getAuthorizationHeader();
     var response = await http.get(getPlaylistUrl, headers: authHeader);
