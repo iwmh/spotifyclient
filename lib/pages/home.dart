@@ -60,6 +60,7 @@ class _FutureList extends StatelessWidget {
       itemCount: list.length,
       itemBuilder: (context, index) {
         return PlaylistCard(
+          imageUrl: list[index].images[0].url,
           name: list[index].name,
         );
         // return Container(

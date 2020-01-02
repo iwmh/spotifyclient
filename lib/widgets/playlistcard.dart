@@ -2,15 +2,34 @@ import 'package:flutter/material.dart';
 
 class PlaylistCard extends StatelessWidget {
   final String name;
+  final String imageUrl;
 
-  PlaylistCard({this.name});
+  PlaylistCard({this.name, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text(name),
-      ),
+    return GestureDetector(
+      onTap: () => {},
+      onLongPress: () => {},
+      child: Container(
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(3.0),
+                height: MediaQuery.of(context).size.width * 0.2,
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: Image.network(imageUrl),
+              ),
+              Container(
+                padding: EdgeInsets.all(3.0),
+                height: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Text(name),
+              )
+            ],
+          )),
     );
   }
 }
