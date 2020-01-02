@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class PlaylistCard extends StatelessWidget {
+  final String id;
   final String name;
   final String imageUrl;
 
-  PlaylistCard({this.name, this.imageUrl});
+  PlaylistCard({this.id, this.name, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
