@@ -20,7 +20,7 @@ class StateModel extends ChangeNotifier {
   Future<List<Playlist>> getCurrentUsersPlaylists(BuildContext context) async {
     var paging;
 
-    if (hasNotPlaylist()) {
+    if (notHavePlaylist()) {
       var authHeader = await Provider.of<ApiTokenModel>(context, listen: false)
           .getAuthorizationHeader();
       var response = await http.get(getPlaylistUrl, headers: authHeader);
@@ -29,15 +29,17 @@ class StateModel extends ChangeNotifier {
       paging = PagingPlaylist.fromJson(pagingMap);
 
       playlist = paging.items;
-    }
       return paging.items;
+    } else {
+      return playlist;
+    }
   }
 
   List<Playlist> get playlists {
     return playlist;
   }
 
-  bool hasNotPlaylist() {
+  bool notHavePlaylist() {
     return playlist.length == 0;
   }
 }
