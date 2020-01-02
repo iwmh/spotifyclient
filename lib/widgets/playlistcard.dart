@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class PlaylistCard extends StatelessWidget {
-  final String id;
   final String name;
 
-  PlaylistCard({this.id, this.name});
+  PlaylistCard({this.name});
 
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Container(
+      child: Center(
+        child: Text(name),
+      ),
+    );
   }
 }
