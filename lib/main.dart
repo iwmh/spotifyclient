@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
 import 'package:spotifyclient/models/StateModel.dart';
 import 'package:spotifyclient/pages/home.dart';
+import 'package:spotifyclient/pages/playlist.dart';
 
 import './pages/entry.dart';
 
@@ -58,6 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
       routes: {
         '/': (BuildContext context) => EntryPage(),
         '/home': (BuildContext context) => HomePage(),
+        '/playlist': (BuildContext context) => PlaylistPage(),
       },
     );
   }
