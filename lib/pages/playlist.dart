@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spotifyclient/models/arguments/PlaylistArgument.dart';
+import 'package:spotifyclient/widgets/trackCard.dart';
 
 const String playlistTrackURL =
     'https://api.spotify.com/v1/playlists/{playlist_id}/tracks';
@@ -16,7 +17,12 @@ class PlaylistPage extends StatelessWidget {
         child: ListView.builder(
           itemCount: tracks.length,
           itemBuilder: (context, index) {
-            return Text(tracks[index].track.name);
+            // return Text(tracks[index].track.name);
+            return TrackCard(
+              id: tracks[index].track.id,
+              name: tracks[index].track.name,
+              artists: tracks[index].track.artists,
+            );
           },
         ),
       ),
