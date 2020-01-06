@@ -5,8 +5,12 @@ import 'package:provider/provider.dart';
 import 'package:spotifyclient/models/ApiTokenModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:spotifyclient/models/api/artist.dart';
+import 'package:spotifyclient/models/api/devices.dart';
 import 'package:spotifyclient/models/api/pagingTracks.dart';
 import 'package:spotifyclient/models/api/playlistTrack.dart';
+
+final String urlDevice = 'https://api.spotify.com/v1/me/player/devices';
+final String urlPlayback = 'https://api.spotify.com/v1/me/player';
 
 class TrackCard extends StatelessWidget {
   final String id;
@@ -22,12 +26,30 @@ class TrackCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        // var playlistTracks = await getPlaylistTracks(context, id);
-        // var args = new PlaylistArgument(tracks: playlistTracks);
-        // Navigator.pushNamed(
-        //   context,
-        //   '/playlist',
-        //   arguments: args);
+        // TODO: Hope this function is called whenever to use the API.
+        await Provider.of<ApiTokenModel>(context, listen: false)
+            .checkAccessTokenValidity();
+        var body = {
+          'uris': ['spotify:track:$id']
+        };
+
+        var authHeader =
+            await Provider.of<ApiTokenModel>(context, listen: false)
+                .getAuthorizationHeader();
+
+        var responseDevice = await http.get(urlDevice, headers: authHeader);
+        var resStringDevice = jsonDecode(responseDevice.body);
+        var devices = Devices.fromJson(resStringDevice);
+
+        var deviceId = devices.devices[0].id;
+        final String url =
+            'https://api.spotify.com/v1/me/player/play?device_id=$deviceId';
+
+        var response =
+            await http.put(url, body: jsonEncode(body), headers: authHeader);
+        var resString = response.body;
+
+        print("object");
       },
       onLongPress: () => {},
       child: Container(
