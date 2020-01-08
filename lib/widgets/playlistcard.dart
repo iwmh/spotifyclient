@@ -6,9 +6,7 @@ import 'package:spotifyclient/models/ApiTokenModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:spotifyclient/models/api/pagingTracks.dart';
 import 'package:spotifyclient/models/api/playlistTrack.dart';
-import 'package:spotifyclient/models/api/track.dart';
 import 'package:spotifyclient/models/arguments/PlaylistArgument.dart';
-import 'package:spotifyclient/pages/playlist.dart';
 
 class PlaylistCard extends StatelessWidget {
   final String id;
@@ -22,7 +20,7 @@ class PlaylistCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         var playlistTracks = await getPlaylistTracks(context, id);
-        var args = new PlaylistArgument(tracks: playlistTracks);
+        var args = new PlaylistArgument(name: name, tracks: playlistTracks);
         Navigator.pushNamed(
           context, 
           '/playlist',

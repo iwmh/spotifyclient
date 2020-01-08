@@ -66,11 +66,15 @@ class TrackCard extends StatelessWidget {
                       // Track Name
                       Expanded(
                         child: Container(
-                          child: Text(name,
-                              textAlign: TextAlign.left,
-                              style: DefaultTextStyle.of(context)
-                                  .style
-                                  .apply(fontSizeFactor: 1.2)),
+                          padding: EdgeInsets.all(4.0),
+                          child: Text(
+                            name,
+                            textAlign: TextAlign.left,
+                            style: DefaultTextStyle.of(context)
+                                .style
+                                .apply(fontSizeFactor: 1.2),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           alignment: Alignment.topLeft,
                         ),
                       ),
@@ -84,6 +88,7 @@ class TrackCard extends StatelessWidget {
                             // Artists
                             Expanded(
                               child: Container(
+                                padding: EdgeInsets.only(left: 4.0),
                                 child: Text(
                                   artistsString,
                                   overflow: TextOverflow.ellipsis,

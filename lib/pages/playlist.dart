@@ -10,9 +10,13 @@ class PlaylistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final PlaylistArgument args = ModalRoute.of(context).settings.arguments;
     var tracks = args.tracks;
+    var name = args.name;
 
     return MaterialApp(
         home: Scaffold(
+      appBar: AppBar(
+        title: Text(name),
+      ),
       body: Container(
         child: ListView.builder(
           itemCount: tracks.length,
