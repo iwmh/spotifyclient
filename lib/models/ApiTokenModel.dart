@@ -32,7 +32,7 @@ class ApiTokenModel extends ChangeNotifier {
   final accessTokenURL = 'https://accounts.spotify.com/api/token';
 
   // Get access token
-  void getAccessToken(String authCode) async {
+  Future <void> getAccessToken(String authCode) async {
     var body = {
       'grant_type': 'authorization_code',
       'code': authCode,
@@ -119,29 +119,29 @@ class ApiTokenModel extends ChangeNotifier {
   }
 
   // Store authorizatioinCode
-  void storeAuthorizationCode(String authorizationCode) async {
+  Future<void> storeAuthorizationCode(String authorizationCode) async {
     await _storage.write(key: authorizationCodeKey, value: authorizationCode);
     notifyListeners();
   }
 
   // Store token-related information
-  void storeAccessToken(String accessToken) async {
+  Future<void> storeAccessToken(String accessToken) async {
     await _storage.write(key: accessTokenKey, value: accessToken);
     notifyListeners();
   }
 
-  void storeScope(String scope) async {
+  Future<void> storeScope(String scope) async {
     await _storage.write(key: scopeKey, value: scope);
     notifyListeners();
   }
 
-  void storeExpiresIn(String expiresIn) async {
+  Future<void> storeExpiresIn(String expiresIn) async {
     await _storage.write(key: expiresInKey, value: expiresIn);
     notifyListeners();
   }
 
   // Convert "expires_in" miliseconds to "expires_at" date time.
-  void storeExpiresAt(String expiresIn) async {
+  Future<void> storeExpiresAt(String expiresIn) async {
     var intExpiresIn = int.parse(expiresIn);
 
     var now = new DateTime.now();
@@ -151,33 +151,38 @@ class ApiTokenModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void storeRefreshToken(String refreshToken) async {
+  Future <void> storeRefreshToken(String refreshToken) async {
     await _storage.write(key: refreshTokenKey, value: refreshToken);
     notifyListeners();
   }
 
   // Delete token-related information
-  void deleteAccessToken() async {
+  Future <void> deleteAuthorizationCode() async {
+    await _storage.delete(key: authorizationCodeKey);
+    notifyListeners();
+  }
+
+  Future <void> deleteAccessToken() async {
     await _storage.delete(key: accessTokenKey);
     notifyListeners();
   }
 
-  void deleteScope() async {
+  Future <void> deleteScope() async {
     await _storage.delete(key: scopeKey);
     notifyListeners();
   }
 
-  void deleteExpiresIn() async {
+  Future <void> deleteExpiresIn() async {
     await _storage.delete(key: expiresInKey);
     notifyListeners();
   }
 
-  void deleteExpiresAt() async {
+  Future <void> deleteExpiresAt() async {
     await _storage.delete(key: expiresAtKey);
     notifyListeners();
   }
 
-  void deleteRefreshToken() async {
+  Future <void> deleteRefreshToken() async {
     await _storage.delete(key: refreshTokenKey);
     notifyListeners();
   }

@@ -22,6 +22,16 @@ class _EntryPageState extends State<EntryPage> {
   }
 
   void setToken() async {
+    /*
+    ONLY IN DEBUGGING
+    */
+    // await Provider.of<ApiTokenModel>(context, listen: false).deleteAuthorizationCode();
+    // await Provider.of<ApiTokenModel>(context, listen: false).deleteAccessToken();
+    // await Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresAt();
+    // await Provider.of<ApiTokenModel>(context, listen: false).deleteExpiresIn();
+    // await Provider.of<ApiTokenModel>(context, listen: false).deleteScope();
+    // await Provider.of<ApiTokenModel>(context, listen: false).deleteRefreshToken();
+
     _requiresUserToAuthenticate =
         Provider.of<ApiTokenModel>(context, listen: false)
             .requiresUserToAuthenticate();
