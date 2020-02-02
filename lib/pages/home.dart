@@ -12,6 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -44,6 +46,15 @@ class _HomePageState extends State<HomePage> {
             return _FutureList(list: snapshot.data);
           }
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('Home')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search), title: Text('Search')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.library_music), title: Text('Library')),
+        ],
       ),
     );
   }
