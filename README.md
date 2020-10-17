@@ -1,6 +1,6 @@
 # spotifyclient
 
-A new Flutter project.
+This is an Flutter app that consumes Spotify Web API.
 
 ## Getting Started
 
